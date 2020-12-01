@@ -4,13 +4,16 @@ TARGET_EXEC ?= aoc-2020
 
 BUILD_DIR ?= obj
 
-SRCS :=  $(wildcard src/*.c)
+SRCS := $(wildcard src/*.c)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 DEPS := $(OBJS:.o=.d)
 
-$ $(TARGET_EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+
+all: day1
+
+day1: obj/src/day1.c.o obj/src/util.c.o
+	$(CC) obj/src/day1.c.o obj/src/util.c.o -o $@ $(LDFLAGS)
 
 # c source
 obj/%.c.o: %.c

@@ -1,4 +1,6 @@
 #include "util.h"
+#include <limits.h>
+#include <stdio.h>
 
 int atoi_s(const char* str, size_t len)
 {
@@ -13,4 +15,30 @@ int atoi_s(const char* str, size_t len)
     }
 
     return res;
+}
+
+int peekchar()
+{
+    char c = getchar();
+    ungetc(c, stdin);
+    return c;
+}
+
+int getint()
+{
+    int result = 0;
+
+    while(result < INT_MAX)
+    {
+        char c = peekchar();
+        if (c >='0' && c<='9')
+        {
+            getchar();
+            result = result * 10 + (c - '0');
+        }
+        else
+            break;
+        
+    }
+    return result;
 }

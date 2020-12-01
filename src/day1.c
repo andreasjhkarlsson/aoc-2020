@@ -1,59 +1,50 @@
-#include "days.h"
+#include "adventofcode.h"
 #include "util.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-int find_pair(const char *lines, int last, int target)
+int find_pair(int list[], size_t length, int last, int target)
 {
-    const char* line = lines;
-
-    if( *line=='\0')
+    if( length==0)
         return -1;
-    
-    while (*line)
+
+    for(int i=0;i<length;i++)
     {
-        size_t line_length = strcspn(line, "\n\0");
-        int n = atoi_s(line, line_length);
-        if (n+last==target)
-            return n*last;
-        
-        line = line + line_length + 1;
+        if (list[i]+last==target)
+            return list[i]*last;
     }
 
-    line = lines;
-    size_t line_length = strcspn(line, "\n\0");
-    int n = atoi_s(line, line_length);
-
-    return find_pair(line+line_length+1, n, target);    
+    return find_pair(list+1, length-1, list[0], target);    
 }
 
-int find_triple(const char *lines, int target)
+int find_triple(int list[], size_t length, int target)
 {
-    const char* line = lines;
-    
-    while (*line)
+    for(int i=0;i<length;i++)
     {
-        size_t line_length = strcspn(line, "\n\0");
-        int n = atoi_s(line, line_length);
-        
-        int res = find_pair(lines, n, target-n);
+        int res = find_pair(list, length, list[i], target-list[i]);
 
         if (res != -1)
-            return res*n;        
-        
-        line = line + line_length + 1;
+            return res*list[i];
     }
-
 }
 
-struct solution day1(const char* lines)
+int main(void)
 {
-    struct solution solution = {0, 0};
+    DAY(1, "Report Repair")
 
-    solution.part1 = find_pair(lines, 0, 2020);
+    int input[4096];
+    int input_length = 0;
 
-    solution.part2 = find_triple(lines, 2020);
+    while (peekchar()!=EOF)
+    {
+        input[input_length++] = getint();
+        getchar(); // newline
+    }
 
-    return solution;
+    SOLUTION
+    (
+        (int64_t)find_pair(input, input_length, 0, 2020),
+        (int64_t)find_triple(input, input_length, 2020)
+    )
 }
