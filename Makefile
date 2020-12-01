@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -x c -std=c17 -MMD -MP
+CFLAGS = -x c -std=c17 -MMD -MP -g
 TARGET_EXEC ?= aoc-2020
 
 BUILD_DIR ?= obj
 
-SRCS :=  src/main.c
+SRCS :=  $(wildcard src/*.c)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 DEPS := $(OBJS:.o=.d)
@@ -25,6 +25,10 @@ endif
 .PHONY: clean
 
 clean:
+ifeq ($(OS),Windows_NT)
+	del $(BUILD_DIR)
+else
 	$(RM) -r $(BUILD_DIR)
+endif
 
 -include $(DEPS)

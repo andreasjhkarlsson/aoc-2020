@@ -1,8 +1,10 @@
 #include <stdint.h>
+#include <stddef.h>
 
 struct solution
 {
-    uint64_t part1;
-    uint64_t part2;
+    int64_t part1;
+    int64_t part2;
 };
 
+struct solution day1(const char* input);
