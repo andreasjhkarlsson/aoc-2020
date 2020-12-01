@@ -10,10 +10,13 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 
-all: day1
+all: day1 day2
 
-day1: obj/src/day1.c.o obj/src/util.c.o
-	$(CC) obj/src/day1.c.o obj/src/util.c.o -o $@ $(LDFLAGS)
+day1: obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o
+	$(CC) obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)
+
+day2: obj/src/day2.c.o obj/src/util.c.o
+	$(CC) obj/src/day2.c.o obj/src/util.c.o -o $@ $(LDFLAGS)
 
 # c source
 obj/%.c.o: %.c
@@ -29,7 +32,7 @@ endif
 
 clean:
 ifeq ($(OS),Windows_NT)
-	del $(BUILD_DIR)
+	rmdir /S /Q $(BUILD_DIR)
 else
 	$(RM) -r $(BUILD_DIR)
 endif

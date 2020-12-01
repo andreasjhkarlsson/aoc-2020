@@ -1,50 +1,56 @@
 #include "adventofcode.h"
 #include "util.h"
+#include "bitarray.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-int find_pair(int list[], size_t length, int last, int target)
+int find_pair(void *set, int target)
 {
-    if( length==0)
-        return -1;
-
-    for(int i=0;i<length;i++)
+    for(int n=0;n<target;n++)
     {
-        if (list[i]+last==target)
-            return list[i]*last;
+        if (bit_array_is_set(set, n) && bit_array_is_set(set, target - n))
+            return n * (target - n);
     }
 
-    return find_pair(list+1, length-1, list[0], target);    
+    return -1; 
 }
 
-int find_triple(int list[], size_t length, int target)
+int find_triple(void *set, int target)
 {
-    for(int i=0;i<length;i++)
+    for(int n=0;n<target;n++)
     {
-        int res = find_pair(list, length, list[i], target-list[i]);
+        if (!bit_array_is_set(set, n))
+            continue;
+
+        int res = find_pair(set, target-n);
 
         if (res != -1)
-            return res*list[i];
+            return res*n;
     }
+
+    abort();
 }
+
+#define TARGET 2020
 
 int main(void)
 {
     DAY(1, "Report Repair")
 
-    int input[4096];
-    int input_length = 0;
+    // Store numbers in bit vector
+    uint32_t numbers[TARGET/32 + 1];
+    bit_array_init(numbers, sizeof(numbers));
 
     while (peekchar()!=EOF)
     {
-        input[input_length++] = getint();
+        bit_array_set(numbers, getint());
         getchar(); // newline
     }
 
     SOLUTION
     (
-        (int64_t)find_pair(input, input_length, 0, 2020),
-        (int64_t)find_triple(input, input_length, 2020)
+        (int64_t)find_pair(numbers, TARGET),
+        (int64_t)find_triple(numbers, TARGET)
     )
 }
