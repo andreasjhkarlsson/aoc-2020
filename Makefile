@@ -1,6 +1,10 @@
-CC = gcc
-CFLAGS = -x c -std=c17 -MMD -MP -g
-TARGET_EXEC ?= aoc-2020
+CC = clang
+CFLAGS = -x c -std=c17 -MMD -MP -g -Wall
+ifeq ($(OS),Windows_NT)
+EXT = .exe
+else
+EXT = 
+endif
 
 BUILD_DIR ?= obj
 
@@ -10,12 +14,12 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 
-all: day1 day2
+all: day1.exe day2.exe
 
-day1: obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o
+day1$(EXT): obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o
 	$(CC) obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)
 
-day2: obj/src/day2.c.o obj/src/util.c.o
+day2$(EXT): obj/src/day2.c.o obj/src/util.c.o
 	$(CC) obj/src/day2.c.o obj/src/util.c.o -o $@ $(LDFLAGS)
 
 # c source

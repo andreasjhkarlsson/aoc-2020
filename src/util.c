@@ -42,3 +42,8 @@ int getint()
     }
     return result;
 }
+
+void skipchar()
+{
+    getchar();
+}

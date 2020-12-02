@@ -9,4 +9,7 @@ int atoi_s(const char * str, size_t len);
 int peekchar();
 
 int getint();
+
+void skipchar();
+
 #endif
