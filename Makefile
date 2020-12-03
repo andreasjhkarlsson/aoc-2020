@@ -13,14 +13,16 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 DEPS := $(OBJS:.o=.d)
 
-
-all: day1.exe day2.exe
+all: day1$(EXT) day2$(EXT) day3$(EXT)
 
 day1$(EXT): obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o
 	$(CC) obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)
 
 day2$(EXT): obj/src/day2.c.o obj/src/util.c.o
 	$(CC) obj/src/day2.c.o obj/src/util.c.o -o $@ $(LDFLAGS)
+
+day3$(EXT): obj/src/day3.c.o obj/src/util.c.o
+	$(CC) obj/src/day3.c.o obj/src/util.c.o -o $@ $(LDFLAGS)	
 
 # c source
 obj/%.c.o: %.c
