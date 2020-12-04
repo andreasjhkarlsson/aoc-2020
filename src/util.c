@@ -47,3 +47,20 @@ void skipchar()
 {
     getchar();
 }
+
+bool matches_any(const char* str, int count, ...)
+{
+    va_list valist;
+
+    va_start(valist, count);
+
+    for(int i=0;i<count;i++)
+    {
+        if (strcmp(str, va_arg(valist, const char *)) == 0)
+            return true;
+    }
+	
+    va_end(valist);
+
+    return false;
+}
