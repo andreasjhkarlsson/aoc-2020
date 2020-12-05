@@ -13,7 +13,7 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 DEPS := $(OBJS:.o=.d)
 
-all: day1$(EXT) day2$(EXT) day3$(EXT) day4$(EXT)
+all: day1$(EXT) day2$(EXT) day3$(EXT) day4$(EXT) day5$(EXT)
 
 day1$(EXT): obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o
 	$(CC) obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)
@@ -26,6 +26,9 @@ day3$(EXT): obj/src/day3.c.o obj/src/util.c.o
 
 day4$(EXT): obj/src/day4.c.o obj/src/util.c.o
 	$(CC) obj/src/day4.c.o obj/src/util.c.o -o $@ $(LDFLAGS)	
+
+day5$(EXT): obj/src/day5.c.o obj/src/util.c.o obj/src/bitarray.c.o
+	$(CC) obj/src/day5.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)		
 
 # c source
 obj/%.c.o: %.c

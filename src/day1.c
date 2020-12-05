@@ -39,8 +39,7 @@ int main(void)
     DAY(1, "Report Repair")
 
     // Store numbers in bit vector
-    uint32_t numbers[TARGET/32 + 1];
-    bit_array_init(numbers, sizeof(numbers));
+    uint32_t numbers[TARGET/32 + 1] = { 0 };
 
     while (peekchar()!=EOF)
     {
