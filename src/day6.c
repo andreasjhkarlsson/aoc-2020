@@ -17,17 +17,21 @@ int main()
     int64_t total_inclusive_count = 0;
     int64_t total_exclusive_count = 0;
 
-    while (peekchar()!=EOF)
-    {
+    get_group_answers:
+        if (peekchar()==EOF)
+            goto done;
         uint32_t inclusive_group_answers = 0;
         uint32_t exclusive_group_answers = 0xFFFFFFFF;
-        
+
+    get_answers:
+        uint32_t answers = 0;
         char c;
-        get_answers: uint32_t answers = 0;
-        while ((c = getchar()) != '\n')
-        {
-            answers |= 1 << (c - 'a');
-        }
+        next_question:
+            if ((c=getchar())!='\n')
+            {
+                answers |= 1 << (c - 'a');
+                goto next_question;
+            }
 
         inclusive_group_answers |= answers;
         exclusive_group_answers &= answers;
@@ -37,9 +41,10 @@ int main()
 
         total_inclusive_count += popcnt(inclusive_group_answers);
         total_exclusive_count += popcnt(exclusive_group_answers);
-        
-        skipchar();
-    }
 
-    SOLUTION(total_inclusive_count,total_exclusive_count);
+        skipchar();
+
+        goto get_group_answers;
+
+    done: SOLUTION(total_inclusive_count,total_exclusive_count);
 }
