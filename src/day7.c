@@ -1,26 +1,32 @@
 #include "adventofcode.h"
 #include "util.h"
+#include "string_store.h"
 #include <stdbool.h>
+
+// Allocate 16 kB for strings
+STRING_STORAGE(1024*16);
 
 struct requirement
 {
     int amount;
-    char color[32];
+    pinned_string color;
 };
 
 struct rule
 {
-    char color[32];
+    pinned_string color;
     int requirement_count;
     struct requirement requirements[8];
 };
 
-void read_color(char* color)
+pinned_string read_color()
 {
+    char color[32];
     scanf("%s ", color);
     size_t len = strlen(color);
     color[len] = ' ';
     scanf("%s", color + len + 1);
+    return PIN_STRING(color);
 }
 
 void read_requirement(struct requirement* req)
@@ -29,7 +35,7 @@ void read_requirement(struct requirement* req)
         skipchar();
 
     scanf("%d ", &req->amount);
-    read_color(req->color);
+    req->color = read_color();
     scanf(" bag");
     if (req->amount > 1) // plural s
         skipchar();
@@ -38,7 +44,7 @@ void read_requirement(struct requirement* req)
 void read_rule(struct rule* rule)
 {
     rule->requirement_count = 0;
-    read_color(rule->color);
+    rule->color = read_color();
     scanf(" bags contain ");
 
     if (peekchar()=='n')
@@ -54,21 +60,21 @@ void read_rule(struct rule* rule)
 
 }
 
-struct rule* find_rule(const char* name, struct rule rules[], int rule_count)
+struct rule* find_rule(pinned_string name, struct rule rules[], int rule_count)
 {
     for (int i=0;i<rule_count;i++)
     {
-        if (strcmp(name, rules[i].color)==0)
+        if (name==rules[i].color)
             return &rules[i];
     }
     return NULL;
 }
 
-bool can_bag_contain(struct rule* rule, const char* target, struct rule rules[], int rule_count)
+bool can_bag_contain(struct rule* rule, pinned_string target, struct rule rules[], int rule_count)
 {
     for(int i=0;i<rule->requirement_count;i++)
     {
-        if (strcmp(rule->requirements[i].color, target) == 0)
+        if (rule->requirements[i].color==target)
             return true;
         else if (can_bag_contain(find_rule(rule->requirements[i].color, rules, rule_count), target, rules, rule_count) > 0)
             return true;
@@ -88,6 +94,8 @@ int bags_required(struct rule* rule, struct rule rules[], int rule_count)
     return requires;
 }
 
+#define SHINY_GOLD PIN_STRING("shiny gold")
+
 int main(void)
 {
     DAY(7, "Handy Haversacks")
@@ -101,14 +109,15 @@ int main(void)
         skipchar();
     }
 
+
     int64_t part1 = 0;
     for (int i=0;i<rule_count;i++)
     {
-        if (can_bag_contain(&rules[i], "shiny gold", rules, rule_count))
+        if (can_bag_contain(&rules[i], SHINY_GOLD, rules, rule_count))
             part1++;
     }
     
-    int64_t part2 = bags_required(find_rule("shiny gold", rules, rule_count), rules, rule_count);
+    int64_t part2 = bags_required(find_rule(SHINY_GOLD, rules, rule_count), rules, rule_count);
 
     SOLUTION(part1, part2)
 }
