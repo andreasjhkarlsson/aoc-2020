@@ -3,7 +3,7 @@
 
 void bit_array_init(void* vector, size_t length)
 {
-    memset(vector, 0, length);
+    memset(vector, 0, (length + 7) / 8);
 }
 
 void bit_array_set(void* vector, int bit)
