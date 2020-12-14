@@ -13,7 +13,7 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 DEPS := $(OBJS:.o=.d)
 
-all: day1$(EXT) day2$(EXT) day3$(EXT) day4$(EXT) day5$(EXT) day6$(EXT) day7$(EXT) day8$(EXT) day9$(EXT) day10$(EXT) day11$(EXT) day12$(EXT) day13$(EXT)
+all: day1$(EXT) day2$(EXT) day3$(EXT) day4$(EXT) day5$(EXT) day6$(EXT) day7$(EXT) day8$(EXT) day9$(EXT) day10$(EXT) day11$(EXT) day12$(EXT) day13$(EXT) day14$(EXT)
 
 day1$(EXT): obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o
 	$(CC) obj/src/day1.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)
@@ -52,7 +52,10 @@ day12$(EXT): obj/src/day12.c.o obj/src/util.c.o obj/src/hashmap.c.o
 	$(CC) obj/src/day12.c.o obj/src/util.c.o obj/src/hashmap.c.o -o $@ $(LDFLAGS)			
 
 day13$(EXT): obj/src/day13.c.o obj/src/util.c.o
-	$(CC) obj/src/day13.c.o obj/src/util.c.o -o $@ $(LDFLAGS)			
+	$(CC) obj/src/day13.c.o obj/src/util.c.o -o $@ $(LDFLAGS)	
+
+day14$(EXT): obj/src/day14.c.o obj/src/util.c.o
+	$(CC) obj/src/day14.c.o obj/src/util.c.o -o $@ $(LDFLAGS)				
 
 # c source
 obj/%.c.o: %.c
