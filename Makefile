@@ -54,8 +54,8 @@ day12$(EXT): obj/src/day12.c.o obj/src/util.c.o obj/src/hashmap.c.o
 day13$(EXT): obj/src/day13.c.o obj/src/util.c.o
 	$(CC) obj/src/day13.c.o obj/src/util.c.o -o $@ $(LDFLAGS)	
 
-day14$(EXT): obj/src/day14.c.o obj/src/util.c.o
-	$(CC) obj/src/day14.c.o obj/src/util.c.o -o $@ $(LDFLAGS)				
+day14$(EXT): obj/src/day14.c.o obj/src/util.c.o obj/src/bitarray.c.o
+	$(CC) obj/src/day14.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)				
 
 # c source
 obj/%.c.o: %.c
