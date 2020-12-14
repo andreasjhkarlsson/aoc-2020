@@ -23,7 +23,7 @@ int main()
         uint32_t inclusive_group_answers = 0;
         uint32_t exclusive_group_answers = 0xFFFFFFFF;
 
-    get_answers:
+    get_answers:;
         uint32_t answers = 0;
         char c;
         next_question:

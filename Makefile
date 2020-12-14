@@ -45,8 +45,8 @@ day9$(EXT): obj/src/day9.c.o obj/src/util.c.o obj/src/bitarray.c.o
 day10$(EXT): obj/src/day10.c.o obj/src/util.c.o obj/src/bitarray.c.o
 	$(CC) obj/src/day10.c.o obj/src/util.c.o obj/src/bitarray.c.o -o $@ $(LDFLAGS)	
 
-day11$(EXT): obj/src/day11.c.o obj/src/util.c.o obj/src/hashmap.c.o
-	$(CC) obj/src/day11.c.o obj/src/util.c.o obj/src/hashmap.c.o -o $@ $(LDFLAGS)	
+day11$(EXT): obj/src/day11.c.o obj/src/util.c.o
+	$(CC) obj/src/day11.c.o obj/src/util.c.o -o $@ $(LDFLAGS)	
 
 day12$(EXT): obj/src/day12.c.o obj/src/util.c.o obj/src/hashmap.c.o
 	$(CC) obj/src/day12.c.o obj/src/util.c.o obj/src/hashmap.c.o -o $@ $(LDFLAGS)			

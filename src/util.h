@@ -17,9 +17,19 @@ void skipchar();
 
 bool matches_any(const char* str, int count, ...);
 
+void _getline(char* line, size_t length);
+
 // Stack based quick sort
 void sqsort(int list[], int length);
 
 void memset64(int64_t* dst, int64_t val, size_t size);
+
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
 
 #endif

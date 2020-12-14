@@ -1,6 +1,5 @@
 #include "adventofcode.h"
 #include "util.h"
-#include "hashmap.h"
 #include <stdio.h>
 
 enum tile

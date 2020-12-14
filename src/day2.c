@@ -29,7 +29,7 @@ int main()
         int min, max;
         char requirement;
         char password[128];
-        scanf_s("%d-%d %c: %s\n", &min, &max, &requirement, 1, password, sizeof(password));
+        scanf("%d-%d %c: %s\n", &min, &max, &requirement, password);
         
         if (is_valid_password(password, requirement, min, max))
             part1++;

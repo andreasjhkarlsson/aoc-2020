@@ -7,7 +7,7 @@ extern char __string_storage[];
 // pinned_string is guaranteed to have static lifetime and 
 // can be compared directly (i.e. the same string always maps to the same memory)
 
-inline const char* string_storage_pin(const char *str)
+static inline const char* string_storage_pin(const char *str)
 {
     size_t len = strlen(str);
 

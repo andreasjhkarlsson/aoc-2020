@@ -52,7 +52,7 @@ int main(void)
     while (peekchar()!=EOF)
     {
         char bpass[11] = {'\0'};
-        scanf_s("%s\n", bpass, sizeof(bpass));
+        scanf("%s\n", bpass);
 
         struct seat seat = get_seat(bpass);
         

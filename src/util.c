@@ -24,6 +24,26 @@ int peekchar()
     return c;
 }
 
+void _getline(char* line, size_t length)
+{
+    int i=0;
+    while(i<(length-1))
+    {
+        char c = getchar();
+        switch (c)
+        {
+        case '\r':
+            if (peekchar()=='\n') skipchar();
+        case '\n':
+        case EOF:
+            break;
+        default:
+            line[i++] = c;
+        }
+    }
+    line[i] = '\0';
+}
+
 int getint()
 {
     int result = 0;

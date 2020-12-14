@@ -1,4 +1,5 @@
 #include "adventofcode.h"
+#include "util.h"
 #include <stdlib.h>
 
 
