@@ -24,6 +24,8 @@ void sqsort(int list[], int length);
 
 void memset64(int64_t* dst, int64_t val, size_t size);
 
+bool starts_with(const char* str, const char* prefix);
+
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif

@@ -120,6 +120,15 @@ void sqsort(int list[], int length)
     memcpy(list, sublist, length * sizeof(int));   
 }
 
+bool starts_with(const char* str, const char* prefix)
+{
+    size_t str_len = strlen(str);
+    size_t prefix_len = strlen(prefix);
+    if (prefix_len > str_len)
+        return false;
+    return memcmp(str, prefix, prefix_len) == 0;
+}
+
 void memset64(int64_t* dst, int64_t val, size_t size)
 {
     for(size_t i=0; i<size; i++)
