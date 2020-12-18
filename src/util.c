@@ -36,11 +36,11 @@ void _getline(char* line, size_t length)
             if (peekchar()=='\n') skipchar();
         case '\n':
         case EOF:
-            break;
+            goto end;
         default:
             line[i++] = c;
         }
-    }
+    } end:
     line[i] = '\0';
 }
 
