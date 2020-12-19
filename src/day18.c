@@ -2,62 +2,86 @@
 #include "util.h"
 #include "parse.h"
 
-struct parse_result parse_expr1(const char* str, char op, intptr_t lhs)
-{
-    while (*str!='\0' && *str!=')')
-    {
-        int64_t rhs = 0;
-        switch (*str)
-        {
-        case ' ':
-            str++;
-            continue;
-        case '*':
-            op = '*';
-            str++;
-            continue;
-        case '+':
-            op = '+';
-            str++;
-            continue;
-        case '(':
-            str++;
-            struct parse_result res = parse_expr1(str,'+',0);
-            str = res.rest;
-            rhs = res.result;
-            str++;
-            break;
-        default:
-            res = parse_int(str);
-            str = res.rest;
-            rhs = res.result;
-            break;
-        }
-
-        switch (op)
-        {
-        case '+':
-            lhs += rhs;
-            break;
-        case '*':
-            lhs *= rhs;
-            break;
-        }
-    }
-
-    return parse_succeeded(lhs, str);
-}
-
-int64_t eval1(const char* str)
-{
-    return parse_expr1(str, '+', 0).result;
-}
-
 CHAR_PARSER(parse_ws, ' ')
 CHAR_PARSER(parse_op_plus, '+')
 CHAR_PARSER(parse_op_mul, '*')
 CHAR_PARSER(parse_left_paren, '(')
 CHAR_PARSER(parse_right_paren, ')')
+
+struct parse_result parse_expr1(const char* str);
+
+struct parse_result parse_group1(const char* str)
+{
+    struct parse_result res = parse_sequence(str, 3, &parse_left_paren, &parse_expr1, &parse_right_paren);
+    if (!res.success)
+        return res;
+   
+    return parse_succeeded(res.results[1],res.rest);
+}
+
+struct parse_result parse_operand(const char* str)
+{
+    return parse_either(str, &parse_group1, &parse_int);
+}
+
+struct parse_result parse_operator(const char* str)
+{
+    return parse_either(str, &parse_op_plus, &parse_op_mul);
+}
+
+struct parse_result parse_part(const char* str, intptr_t lhs)
+{
+
+    struct parse_result res = parse_terminator(str);
+    if (res.success)
+        return parse_succeeded(lhs, str);
+
+    res = parse_sequence(str, 4, &parse_ws, &parse_operator, &parse_ws, &parse_operand);
+
+    if (!res.success)
+        return res;
+
+    intptr_t rhs = res.results[3];
+    intptr_t value;
+
+    switch (res.results[1])
+    {
+    case '+':
+        value = lhs + rhs;
+        break;
+    case '*':
+        value = lhs * rhs;
+        break;
+    default:
+        BAIL("Unsupported operator")
+    }
+
+    res = parse_part(res.rest, value);
+
+    if (res.success)
+        return res;
+        
+    return parse_succeeded(value, res.rest);
+}
+
+struct parse_result parse_expr1(const char* str)
+{
+    struct parse_result res = parse_operand(str);
+    if (!res.success)
+        return res;
+    return parse_part(res.rest, res.result);
+}
+
+int64_t eval1(const char* str)
+{
+    /*
+        Part 1 grammar:
+        expr ::= operand part
+        part ::= (+|*) operand part | ε
+        operand ::= ( expr ) | integer
+    */
+    return parse_expr1(str).result;
+}
 
 struct parse_result parse_expr2(const char* str);
 struct parse_result parse_factor(const char* str);
@@ -132,8 +156,6 @@ int main(void)
         part2 += eval2(line);
     }
 
-
-    // 98621258158412
     SOLUTION(part1, part2)
 }
 
