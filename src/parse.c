@@ -11,6 +11,14 @@ struct parse_result parse_succeeded(intptr_t result, const char* rest)
     return (struct parse_result) { .success = true, .result = result, .count = 1, .rest = rest};
 }
 
+struct parse_result parse_succeedeed_with_data(void* data, size_t size, const char* rest)
+{
+    struct parse_result res = { .success = true, .rest = rest };
+    res.count = size;
+    memcpy(&res.data[0], data, size);
+    return res;
+}
+
 struct parse_result parse_char(const char* str, char c)
 {
     if (*str==c)
@@ -84,4 +92,31 @@ struct parse_result parse_sequence(const char* str, int count, ...)
     end: va_end(valist);
 
     return res;
+}
+
+struct parse_result parse_map_result(struct parse_result parse_result, int index)
+{
+    parse_result.result = parse_result.results[index];
+    return parse_result;
+}
+
+
+struct parse_result parse_any_char(const char* str)
+{
+    if (*str)
+        return parse_succeeded(*str, str+1);
+    return parse_failed(str);
+}
+
+struct parse_result parse_string_literal(const char* str, const char* to_match)
+{
+    int len1 = strlen(str);
+    int len2 = strlen(to_match);
+    if (len2 > len1)
+        return parse_failed(str);
+    
+    if (memcmp(str, to_match, len2)==0)
+        return parse_succeeded((intptr_t)to_match, str+len2);
+
+    return parse_failed(str);
 }
